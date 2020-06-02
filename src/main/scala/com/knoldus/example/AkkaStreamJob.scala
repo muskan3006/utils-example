@@ -4,7 +4,7 @@ import akka.actor.ActorSystem
 import akka.stream.Materializer
 
 
-abstract class AkkaStreamJob(as: ActorSystem)  {
+abstract class AkkaStreamJob(as: ActorSystem) {
   implicit val actorSystem: ActorSystem = as
   implicit val materializer = Materializer
 }

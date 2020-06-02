@@ -1,25 +1,26 @@
 package com.knoldus.example
+
 import java.time.Instant
 
 import com.knoldus.string.StringUtils._
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Reads}
+import play.api.libs.json.{JsPath, Json, Reads}
 
-case class Book(bookId:String,
-                title:String,
-                author:String,
-                price:Int,
-                publicationDate:Instant,
-                bookDetails:Option[String],
-                copiesSold:Int,
-                royalty:Option[Double]){
+case class Book(bookId: String,
+                title: String,
+                author: String,
+                price: Int,
+                publicationDate: Instant,
+                bookDetails: Option[String],
+                copiesSold: Int,
+                royalty: Option[Double]) {
   def trimFieldLength: Book = {
     copy(bookDetails = bookDetails.map(_.truncateToLength()))
   }
 }
 
-object Book{
-  implicit val r: Reads[Book] = ((JsPath \ "bookId").read[String] and
+object Book {
+  implicit val reads: Reads[Book] = ((JsPath \ "bookId").read[String] and
     (JsPath \ "title").read[String] and
     (JsPath \ "author").read[String] and
     (JsPath \ "price").read[Int] and
@@ -28,4 +29,5 @@ object Book{
     (JsPath \ "copiesSold").read[Int] and
     (JsPath \ "royalty").readNullable[Double]
     ) (Book.apply _)
+  implicit val format = Json.format[Book]
 }
